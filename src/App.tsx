@@ -6,7 +6,6 @@ import NotFound from './components/NotFound'
 import Characters from './components/Characters'
 import Edit from './components/Edit'
 import Create from './components/Create'
-import './App.css'
 
 function App() {
 
