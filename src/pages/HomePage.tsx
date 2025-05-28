@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Container, Carousel, Row, Col, Button } from 'react-bootstrap';
+import { Container, Carousel, Row, Col, Button, Nav, Navbar } from 'react-bootstrap'; //Should be individual imports for better tree shaking
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import NavBar from '../components/NavBar';
 
 function HomePage() {
-  const [characters, setCharacters] = useState([]);
+  //const [characters, setCharacters] = useState([]);
 
   // Fetch all characters from the database
   useEffect(() => {
@@ -20,6 +21,7 @@ function HomePage() {
 
   return (
     <Container>
+      <NavBar />
       <Row className="mb-4">
         <Col>
           <h3>Welcome to the Marvel Character Creator!</h3>
@@ -30,9 +32,9 @@ function HomePage() {
         </Col>
       </Row>
 
-      <Row className="mb-4">
+        {/* <Row className="mb-4">
         <Col>
-          <Carousel
+        <Carousel
             prevIcon={
                 <span
                   className="carousel-control-prev-icon bg-dark"
@@ -75,14 +77,14 @@ function HomePage() {
             )}
           </Carousel>
         </Col>
-      </Row>
+      </Row> */}
 
       <Row className="mb-4 text-center">
         <Col>
-          <Button as={Link} to="/characters" variant="primary" className="me-2">
+          <Button as={Link as any} to="/characters" variant="primary" className="me-2">
             View All Characters
           </Button>
-          <Button as={Link} to="/create" variant="success">
+          <Button as={Link as any} to="/create" variant="success">
             Add New Character
           </Button>
         </Col>

@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+//import NavDropdown from 'react-bootstrap/NavDropdown';
 
 
 function NavBar() {
@@ -17,14 +17,17 @@ function NavBar() {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav>
-          <Nav.Link as={NavLink} to="/" activeclassname="active"> 
+          <Nav.Link as={NavLink} to="/" > 
             Home
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/Characters" activeclassname="active">
+          <Nav.Link as={NavLink} to="/Characters">
             Characters
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/Create" activeclassname="active">
+          <Nav.Link as={NavLink} to="/Create" >
             Create Character
+          </Nav.Link>
+                    <Nav.Link as={NavLink} to="/login" >
+            Login
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
