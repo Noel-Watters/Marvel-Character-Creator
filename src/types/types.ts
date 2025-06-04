@@ -7,13 +7,14 @@ export interface User {
 }
 
 export interface Character {
+    id: string;
     age: number;
     alignment: string;
-    class?: Class;
-    img?: string;
+    class: string;
+    img: string;
     name: string
     player: string;
-    race?: Race;
+    race: string;
     level: number;
     stats : {
         CHA: number;

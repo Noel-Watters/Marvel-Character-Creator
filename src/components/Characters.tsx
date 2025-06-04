@@ -1,37 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
+//import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import Modal from 'react-bootstrap/Modal';
-import DeleteOffCanvas from './DeleteOffCanvas'; 
+//import Modal from 'react-bootstrap/Modal';
+//import DeleteOffCanvas from './DeleteOffCanvas'; 
+
+import { fetchCharacters } from '../Firebase/FetchFirestone';
+import {useQuery} from '@tanstack/react-query';
+import LoadingSpinner from './LoadingSpinner'; // Import the LoadingSpinner component
+import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
+import { SetCharacter } from '../redux/slices/CharacterSlice'; // Import the action to set characters in Redux store
+import CharacterCard from './CharacterCard';
+import NavBar from './NavBar';
 
 function Characters() {
-  const [characters, setCharacters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const [selectedCharacter, setSelectedCharacter] = useState(null); // Selected character state
-  const [showDeleteOffCanvas, setShowDeleteOffCanvas] = useState(false); // Control DeleteOffCanvas visibility
-  const [characterToDelete, setCharacterToDelete] = useState(null); // 
+  const dispatch = useDispatch(); // Initialize Redux dispatch
+  //const [showModal, setShowModal] = useState(false); // Modal visibility state
+  //const [selectedCharacter, setSelectedCharacter] = useState(null); // Selected character state
+  //const [showDeleteOffCanvas, setShowDeleteOffCanvas] = useState(false); // Control DeleteOffCanvas visibility
+  //const [characterToDelete, setCharacterToDelete] = useState(null); 
 
-  // Fetch characters from the Flask API
-  useEffect(() => {
-    axios.get('http://127.0.0.1:5000/characters')
-      .then(response => {
-        setCharacters(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(`Failed to fetch characters: ${error.message}`);
-        setLoading(false);
-      });
-  }, []);
+//Fetch Characters
+const {data:charactersData, isLoading} = useQuery({
+  queryKey: ['characters'],
+  queryFn: fetchCharacters,
+});
 
+const characters = charactersData || [];
+
+
+
+//Dispatch the fetched charaters to Redux store
+useEffect (() => {
+  if (charactersData) {
+    dispatch(SetCharacter(charactersData)); 
+  }
+}, [charactersData, dispatch]);
+
+// Show loading spinner while fetching characters 
+if (isLoading) return <LoadingSpinner />; 
+if (!characters || characters.length === 0) {
+  return (
+    <Container className="text-center mt-5">
+      <h3>No characters found</h3>
+      <p>Please create a character to get started.</p>
+      <Button as={Link} to='/create' className="bg-danger">Create Character</Button>
+    </Container>
+  )};
+
+
+/*
   // Open the DeleteOffCanvas and set the character to delete
   const handleDeleteClick = (character) => {
     setCharacterToDelete(character);
@@ -66,26 +87,10 @@ function Characters() {
     setSelectedCharacter(null);
   };
 
-  if (loading) {
-    return (
-      <Container>
-        <h3>
-          <Spinner
-            animation="border"
-            variant="info"
-            style={{ marginRight: '15px' }}
-            role="status"
-          />
-          Loading Characters...
-        </h3>
-      </Container>
-    );
-  }
-
-  if (error) return <p>{error}</p>;
-
+*/
   return (
     <Container>
+      <NavBar />
       <Row className="align-items-center mb-3">
         <Col>
           <h3>Character List</h3>
@@ -98,47 +103,12 @@ function Characters() {
       <Row>
         {characters.map(character => (
           <Col key={character.id} className="mt-4">
-            <Card
-              style={{ width: '18rem', cursor: 'pointer' }}
-              onClick={() => handleCardClick(character)} // Open modal on card click
-            >
-              <Card.Img variant="top" src={character.image_url || 'https://www.shutterstock.com/image-vector/gender-neutral-profile-avatar-front-260nw-1994872016.jpg'} alt={character.name} />
-              <Card.Body>
-                <Card.Title>{character.name}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">Alias: {character.alias}</Card.Subtitle>
-                <div className='mt-2'>
-                  <strong>Powers:</strong>
-                  <ul>
-                    {character.powers.split(',').map((power, index) => (
-                      <li key={index}>{power.trim()}</li>
-                    ))}
-                  </ul>
-                </div>
-                <Card.Text>Alignment: {character.alignment}</Card.Text>
-                <Button
-                    as={Link}
-                    to={`/edit/${character.id}`} // Navigate to the Edit page with the character ID
-                    className="me-2 bg-secondary text-white"
-                    onClick={(e) => e.stopPropagation()} // Prevent modal from opening
-                    >
-                        Edit
-                </Button>
-                <Button
-                  className="bg-danger"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent modal from opening
-                     handleDeleteClick(character);
-                    }}
-                >
-                  Delete
-                </Button>
-              </Card.Body>
-            </Card>
+           <CharacterCard character={character} />
           </Col>
         ))}
       </Row>
 
-      {/* Modal for displaying character details */}
+      {/* Modal for displaying character details 
       {selectedCharacter && (
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
@@ -171,8 +141,9 @@ function Characters() {
         characterName={characterToDelete?.name} // Pass the character's name
         show={showDeleteOffCanvas} // Control visibility
         onHide={() => setShowDeleteOffCanvas(false)} // Close the DeleteOffCanvas
-      />
-    </Container>
+      />*/}
+    </Container> 
+    
   );
 }
 

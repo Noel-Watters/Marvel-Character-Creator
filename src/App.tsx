@@ -9,6 +9,9 @@ import Create from './components/Create'
 import Login from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage'
 //import { useSelector } from 'react-redux';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   //const user = useSelector((state: RootState) => state.user.user);
