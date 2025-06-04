@@ -26,7 +26,7 @@ function NavBar() {
           <Nav.Link as={NavLink} to="/Create" >
             Create Character
           </Nav.Link>
-                    <Nav.Link as={NavLink} to="/login" >
+          <Nav.Link as={NavLink} to="/login" >
             Login
           </Nav.Link>
         </Nav>

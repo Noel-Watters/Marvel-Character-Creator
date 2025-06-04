@@ -2,16 +2,14 @@ import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Homepage from './pages/HomePage'
 import NotFound from './pages/NotFound'
-import Characters from './components/Characters'
+import Characters from './pages/CharactersPage'
 import Edit from './components/Edit'
-import Create from './components/Create'
+import Create from './pages/CreateCharacterPage'
 //import { RootState } from "./redux/store";
 import Login from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage'
 //import { useSelector } from 'react-redux';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
 
 function App() {
   //const user = useSelector((state: RootState) => state.user.user);

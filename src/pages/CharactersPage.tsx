@@ -10,11 +10,11 @@ import Button from 'react-bootstrap/Button';
 
 import { fetchCharacters } from '../Firebase/FetchFirestone';
 import {useQuery} from '@tanstack/react-query';
-import LoadingSpinner from './LoadingSpinner'; // Import the LoadingSpinner component
+import LoadingSpinner from '../components/LoadingSpinner'; // Import the LoadingSpinner component
 import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
 import { SetCharacter } from '../redux/slices/CharacterSlice'; // Import the action to set characters in Redux store
-import CharacterCard from './CharacterCard';
-import NavBar from './NavBar';
+import CharacterCard from '../components/CharacterCard';
+import NavBar from '../components/NavBar';
 
 function Characters() {
   const dispatch = useDispatch(); // Initialize Redux dispatch
@@ -47,7 +47,7 @@ if (!characters || characters.length === 0) {
     <Container className="text-center mt-5">
       <h3>No characters found</h3>
       <p>Please create a character to get started.</p>
-      <Button as={Link} to='/create' className="bg-danger">Create Character</Button>
+      <Button as={Link} to="/create" className="bg-danger">Create Character</Button>
     </Container>
   )};
 
