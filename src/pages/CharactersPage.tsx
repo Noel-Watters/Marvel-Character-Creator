@@ -1,11 +1,10 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-//import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-//import Modal from 'react-bootstrap/Modal';
+import Modal from 'react-bootstrap/Modal';
 //import DeleteOffCanvas from './DeleteOffCanvas'; 
 
 import { fetchCharacters } from '../Firebase/FetchFirestone';
@@ -15,11 +14,13 @@ import { useDispatch } from 'react-redux'; // Import useDispatch from react-redu
 import { SetCharacter } from '../redux/slices/CharacterSlice'; // Import the action to set characters in Redux store
 import CharacterCard from '../components/CharacterCard';
 import NavBar from '../components/NavBar';
+import { Character } from '../types/types'; // Import the Character type
+import CharacterModal from '../components/CharacterModal';
 
 function Characters() {
   const dispatch = useDispatch(); // Initialize Redux dispatch
-  //const [showModal, setShowModal] = useState(false); // Modal visibility state
-  //const [selectedCharacter, setSelectedCharacter] = useState(null); // Selected character state
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [selectedCharacter, setSelectedCharacter] = useState<Character |null>(null); // Selected character state
   //const [showDeleteOffCanvas, setShowDeleteOffCanvas] = useState(false); // Control DeleteOffCanvas visibility
   //const [characterToDelete, setCharacterToDelete] = useState(null); 
 
@@ -47,7 +48,7 @@ if (!characters || characters.length === 0) {
     <Container className="text-center mt-5">
       <h3>No characters found</h3>
       <p>Please create a character to get started.</p>
-      <Button as={Link} to="/create" className="bg-danger">Create Character</Button>
+      <Link to="/create" className="btn btn-danger">Create Character</Link>
     </Container>
   )};
 
@@ -75,8 +76,10 @@ if (!characters || characters.length === 0) {
     }
   };
 
+  */
+
   // Open the modal and set the selected character
-  const handleCardClick = (character) => {
+  const handleCardClick = (character:Character) => {
     setSelectedCharacter(character);
     setShowModal(true);
   };
@@ -87,7 +90,7 @@ if (!characters || characters.length === 0) {
     setSelectedCharacter(null);
   };
 
-*/
+
   return (
     <Container>
       <NavBar />
@@ -96,52 +99,35 @@ if (!characters || characters.length === 0) {
           <h3>Character List</h3>
         </Col>
         <Col className="text-end">
-          <Button as={Link} to='/create' className="bg-danger">Create Character</Button>
+          <Link to="/create" className="btn btn-danger">Create Character</Link>
         </Col>
       </Row>
 
       <Row>
         {characters.map(character => (
           <Col key={character.id} className="mt-4">
-           <CharacterCard character={character} />
+           <CharacterCard character={character} onClick={() => handleCardClick(character)} />
           </Col>
         ))}
       </Row>
 
-      {/* Modal for displaying character details 
+      {/* Modal for displaying character details */}
       {selectedCharacter && (
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedCharacter.name}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <img
-              src={selectedCharacter.image_url ||'https://www.shutterstock.com/image-vector/gender-neutral-profile-avatar-front-260nw-1994872016.jpg' }
-              alt={selectedCharacter.name}
-              style={{ width: '100%', marginBottom: '15px' }}
-            />
-            <p><strong>Alias:</strong> {selectedCharacter.alias}</p>
-            <p><strong>Alignment:</strong> {selectedCharacter.alignment}</p>
-            <p><strong>Powers:</strong></p>
-            <ul>
-              {selectedCharacter.powers.split(',').map((power, index) => (
-                <li key={index}>{power.trim()}</li>
-              ))}
-            </ul>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <CharacterModal
+          show={showModal}
+          selectedCharacter={selectedCharacter}
+          handleCloseModal={handleCloseModal}
+        />
       )}
+
+      {/*
  <DeleteOffCanvas
         onDelete={handleDeleteConfirm} // Handle delete confirmation
         characterName={characterToDelete?.name} // Pass the character's name
         show={showDeleteOffCanvas} // Control visibility
         onHide={() => setShowDeleteOffCanvas(false)} // Close the DeleteOffCanvas
-      />*/}
+      /> */}
+
     </Container> 
     
   );

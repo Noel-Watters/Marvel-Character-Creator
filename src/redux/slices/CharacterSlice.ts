@@ -19,6 +19,7 @@ const characterSlice = createSlice({
         SetCharacter: (state, action: PayloadAction<Character[]>) => { // sets character in the state
             state.characters = action.payload;
         },
+        
 
     }});
 export const { SetCharacter} = characterSlice.actions;

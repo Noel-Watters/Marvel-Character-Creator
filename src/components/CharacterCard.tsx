@@ -3,10 +3,10 @@ import Card from 'react-bootstrap/Card';
 import { Character } from '../types/types';
 
 
-const CharacterCard:React.FC<{character: Character}> = ({character}) => {
+const CharacterCard:React.FC<{character: Character; onClick?: () => void}> = ({character, onClick}) => {
 
     return (                        
-    <Card className="shadow-sm">
+    <Card className="shadow-sm"onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
         <Card.Body>
             <Card.Title>{character.name}</Card.Title>
             <Card.Text >
